@@ -8,24 +8,32 @@ namespace Services.Implementations
 {
     public class ProductSerivce(IUnitOfWork _unitOfWork,IMapper _mapper) : IProductService
     {
-        public Task<IEnumerable<BrandResultDto>> GetAllBrandsAsync()
+        public async Task<IEnumerable<BrandResultDto>> GetAllBrandsAsync()
         {
-            _unitOfWork.GetRepository<ProductBrand,int>();
+            var brands = await _unitOfWork.GetRepository<ProductBrand,int>().GetAllAsync();
+            var brandResult =  _mapper.Map<IEnumerable<BrandResultDto>>(brands);
+            return brandResult;
         }
 
-        public Task<IEnumerable<ProductResultDto>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductResultDto>> GetAllProductsAsync()
         {
-            _unitOfWork.GetRepository<ProductBrand,int>();
+            var Products =  await _unitOfWork.GetRepository<Product,int>().GetAllAsync();
+            var ProductResult =  _mapper.Map<IEnumerable<ProductResultDto>>(Products);
+            return ProductResult;
         }
 
-        public Task<IEnumerable<TypeResultDto>> GetAllTypesAsync()
+        public async Task<IEnumerable<TypeResultDto>> GetAllTypesAsync()
         {
-            throw new NotImplementedException();
+            var Types = await _unitOfWork.GetRepository<ProductType,int>().GetAllAsync();
+            var TypeResult =  _mapper.Map<IEnumerable<TypeResultDto>>(Types);
+            return TypeResult;
         }
 
-        public Task<ProductResultDto?> GetProductByIdAsync(int id)
+        public async Task<ProductResultDto?> GetProductByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await _unitOfWork.GetRepository<Product,int>().GetByIdAsync(id);
+            var productResult =  _mapper.Map<ProductResultDto>(product);
+            return productResult;
         }
     }
 }

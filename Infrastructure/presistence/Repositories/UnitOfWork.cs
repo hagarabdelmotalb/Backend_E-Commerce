@@ -15,7 +15,7 @@ namespace Persistence.Repositories
             _dbContext = dbContext;
             _repositories = new();
         }
-        public IGenericRepository<TEntity, Tkey> GenericRepository<TEntity, Tkey>() where TEntity : BaseEntity<Tkey>
+        public IGenericRepository<TEntity, Tkey> GetRepository<TEntity, Tkey>() where TEntity : BaseEntity<Tkey>
             =>(IGenericRepository<TEntity, Tkey>) _repositories.GetOrAdd(typeof(TEntity).Name, (_) => new GenericRepository<TEntity, Tkey>(_dbContext));
 
         public async Task<int> SaveChangesAsync() => await _dbContext.SaveChangesAsync();
