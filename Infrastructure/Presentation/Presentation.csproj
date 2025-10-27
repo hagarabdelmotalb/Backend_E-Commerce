@@ -1,20 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App"></FrameworkReference>
-    </ItemGroup>
-	<ItItemGroup></ItemGroup>
-		
-	<Project
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Services.Abstraction\Services.Abstraction.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Core\Services.Abstraction\Services.Abstraction.csproj" />
-	</ItemGroup>
-<>Item=
 </Project>
