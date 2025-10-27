@@ -1,7 +1,7 @@
-
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
+using Persistence.Repositories;
 
 namespace E_Commerce.API
 {
@@ -10,7 +10,6 @@ namespace E_Commerce.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -23,10 +22,13 @@ namespace E_Commerce.API
             });
 
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             var app = builder.Build();
             var scope =  app.Services.CreateScope();
             var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            objectOfDataSeeding.SeedData();
+
+            objectOfDataSeeding.SeedDataAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
