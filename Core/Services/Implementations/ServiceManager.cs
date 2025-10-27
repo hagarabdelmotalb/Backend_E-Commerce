@@ -7,6 +7,6 @@ namespace Services.Implementations
     public class ServiceManager(IUnitOfWork _unitOfWork,IMapper _mapper ): IServiceManager
     {
         private readonly Lazy<IProductService> _productService = new Lazy<IProductService>(() => new ProductSerivce(_unitOfWork, _mapper));
-        public IProductService ProductService => _productService.Value;
+        public IProductService ProductService => _productService.value;
     }
 }

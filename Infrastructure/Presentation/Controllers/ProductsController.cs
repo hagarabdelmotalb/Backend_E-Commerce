@@ -1,6 +1,8 @@
-﻿namespace Presentation.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+namespace Presentation.Controllers
 {
-    internal class ProductsController
+    public class ProductsController : ControllerBase
     {
+
     }
 }
