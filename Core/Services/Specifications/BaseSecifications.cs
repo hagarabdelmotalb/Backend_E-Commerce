@@ -20,14 +20,12 @@ namespace Services.Specifications
             IncludeExpression.Add(includeExpression);
         }
         #region OrderBy
-        public LambdaExpression OrderBy { get; private set; }
-        public LambdaExpression OrderByDescending { get; private set; }
+        public Expression OrderBy { get; private set; }
+        public Expression OrderByDescending { get; private set; }
 
-        protected void AddOrderBy<TProperty>(Expression<Func<TEntity, TProperty>> orderByExpression)
-            => OrderBy = orderByExpression;
+        protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression) => OrderBy = orderByExpression;
 
-        protected void AddOrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> orderByDescExpression)
-            => OrderByDescending = orderByDescExpression;
+        protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescExpression) => OrderByDescending = orderByDescExpression;
 
         #endregion
     }
