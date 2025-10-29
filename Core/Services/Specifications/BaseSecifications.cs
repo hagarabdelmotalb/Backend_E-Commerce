@@ -1,0 +1,34 @@
+﻿using Domain.Contracts;
+using Domain.Entities;
+using System.Linq.Expressions;
+
+namespace Services.Specifications
+{
+    public abstract class BaseSecifications<TEntity, TKey>
+        : ISpecifications<TEntity, TKey> where TEntity : BaseEntity<TKey>
+    {
+        protected BaseSecifications(Expression<Func<TEntity, bool>> criteria)
+        {
+            Criteria = criteria;
+        }
+        public Expression<Func<TEntity, bool>> Criteria  {get; private set;}
+
+        public List<Expression<Func<TEntity, object>>> IncludeExpression { get; } = new();
+
+        protected void AddIncludes(Expression<Func<TEntity, object>> includeExpression)
+        {
+            IncludeExpression.Add(includeExpression);
+        }
+        #region OrderBy
+        public LambdaExpression OrderBy { get; private set; }
+        public LambdaExpression OrderByDescending { get; private set; }
+
+        protected void AddOrderBy<TProperty>(Expression<Func<TEntity, TProperty>> orderByExpression)
+            => OrderBy = orderByExpression;
+
+        protected void AddOrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> orderByDescExpression)
+            => OrderByDescending = orderByDescExpression;
+
+        #endregion
+    }
+}
