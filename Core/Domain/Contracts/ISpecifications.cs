@@ -9,5 +9,8 @@ namespace Domain.Contracts
         public List<Expression<Func<TEntity, object>>> IncludeExpression { get; }
         public Expression<Func<TEntity, object>> OrderBy { get; }
         public Expression<Func<TEntity, object>> OrderByDescending { get; }
+        public int Skip { get; }
+        public int Take { get; }
+        public bool IsPagingEnabled { get; }
     }
 }
