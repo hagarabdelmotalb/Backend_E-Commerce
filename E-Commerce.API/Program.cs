@@ -1,4 +1,5 @@
 using Domain.Contracts;
+using E_Commerce.API.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 using Persistence.Repositories;
@@ -36,6 +37,7 @@ namespace E_Commerce.API
             objectOfDataSeeding.SeedDataAsync();
 
             // Configure the HTTP request pipeline.
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

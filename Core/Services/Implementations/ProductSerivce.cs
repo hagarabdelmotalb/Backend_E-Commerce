@@ -43,5 +43,6 @@ namespace Services.Implementations
             var productResult =  _mapper.Map<ProductResultDto>(product);
             return productResult;
         }
+
     }
 }
