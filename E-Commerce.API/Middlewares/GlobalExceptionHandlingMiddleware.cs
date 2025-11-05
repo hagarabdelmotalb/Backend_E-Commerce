@@ -18,12 +18,24 @@ namespace E_Commerce.API.Middlewares
             try 
             { 
                 await _next(context);
+                if (context.Response.StatusCode == StatusCodes.Status404NotFound && !context.Response.HasStarted)
+                    await HandleNotFoundApiAsync(context);
             }
             catch (Exception ex) 
             {
                 _logger.LogError($"somthing went wrong =>: {ex.Message } ");
                 await HandleExceptionAsync(context,ex);
             }
+        }
+        private async Task HandleNotFoundApiAsync(HttpContext context)
+        {
+            context.Response.ContentType = "application/json";
+            var response = new ErrorDetails()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = $"The endpoint with url {context.Request.Path} not found"
+            }.ToString();
+            await context.Response.WriteAsync(response);
         }
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
