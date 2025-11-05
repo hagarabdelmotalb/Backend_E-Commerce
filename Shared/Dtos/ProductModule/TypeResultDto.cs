@@ -1,6 +1,6 @@
-﻿namespace Shared.Dtos
+﻿namespace Shared.Dtos.ProductModule
 {
-    public record BrandResultDto
+    public class TypeResultDto
     {
         public int Id { get; init; }
         public string Name { get; init; } = string.Empty;
