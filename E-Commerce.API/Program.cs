@@ -1,63 +1,44 @@
-using Domain.Contracts;
-using E_Commerce.API.Factories;
-using E_Commerce.API.Middlewares;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Data;
-using Persistence.Repositories;
-using Services;
-using Services.Abstraction.Contracts;
-using Services.Implementations;
+using E_Commerce.API.Extensions;
 
 namespace E_Commerce.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
+            #region DI Container
             var builder = WebApplication.CreateBuilder(args);
-            // Add services to the container.
+            // Web API services extension method
+            builder.Services.AddWebApiServices();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = ApiResponseFactory.CustomValidationErrorResponse;
-            });
+            //infrastructure services extension method
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
-            builder.Services.AddDbContext<StoreDbContext>(option =>
-            {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+            //core services extension method
+            builder.Services.AddCoreServices(); 
+            #endregion
 
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(fu => { },typeof(ProjectReference).Assembly);
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
             var app = builder.Build();
-            var scope =  app.Services.CreateScope();
-            var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
 
-            objectOfDataSeeding.SeedDataAsync();
+            #region Pipliens
+            //data seeding extension method
+            await app.SeedDatabaseAsync();
 
             // Configure the HTTP request pipeline.
-            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+            app.UseExepctionHandlingMiddleware();
+
+
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-
+                app.UseSwaggerMiddlewares();
             }
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
             app.UseStaticFiles();
-            app.MapControllers();
+            app.MapControllers(); 
+            #endregion
 
             app.Run();
         }
