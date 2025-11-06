@@ -8,9 +8,7 @@ using Shared.ErrorModels;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductController(IServiceManager _serviceManager) : ControllerBase
+    public class ProductController(IServiceManager _serviceManager) : ApiController
     {
         //get all products
         [HttpGet]
@@ -18,9 +16,6 @@ namespace Presentation.Controllers
             => Ok(await _serviceManager.ProductService.GetAllProductsAsync(parameters));
 
         [ProducesResponseType(typeof(ProductResultDto),StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
 
         //get product by id
         [HttpGet("{id:int}")]

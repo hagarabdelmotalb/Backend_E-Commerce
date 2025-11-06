@@ -46,7 +46,7 @@ namespace Services.Specifications
         {
             IsPagingEnabled = true;
             Take = pagesSize;
-            Skip = (pageIndex - 1) * pagesSize;
+            Skip = Math.Max(0, (pageIndex - 1) * pagesSize);
         }
         #endregion
     }
