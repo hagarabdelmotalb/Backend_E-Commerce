@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction.Contracts;
 using Shared;
 using Shared.Dtos;
 using Shared.Enums;
+using Shared.ErrorModels;
 
 namespace Presentation.Controllers
 {
@@ -15,7 +17,12 @@ namespace Presentation.Controllers
         public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProducts([FromQuery]ProductSpecificationParameters parameters)
             => Ok(await _serviceManager.ProductService.GetAllProductsAsync(parameters));
 
-       //get product by id
+        [ProducesResponseType(typeof(ProductResultDto),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
+
+        //get product by id
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductResultDto>> GetProductByIdAsync(int id)
             => Ok(await _serviceManager.ProductService.GetProductByIdAsync(id));
